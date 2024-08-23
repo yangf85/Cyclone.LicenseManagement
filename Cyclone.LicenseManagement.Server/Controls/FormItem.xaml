@@ -1,0 +1,35 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctl="clr-namespace:Cyclone.LicenseManagement.Server.Controls">
+
+    <ControlTemplate
+        x:Key="FormItemControlTemplate"
+        TargetType="{x:Type ctl:FormItem}">
+        <Grid HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="{TemplateBinding SharedName}" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ContentPresenter
+                Grid.Column="0"
+                HorizontalAlignment="{Binding Path=LabelHorizontalAlignment, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                Content="{TemplateBinding Label}" />
+            <ContentPresenter
+                Grid.Column="1"
+                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                Content="{TemplateBinding Content}" />
+            <ContentPresenter
+                Grid.Column="2"
+                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                Content="{TemplateBinding AttachedObject}" />
+        </Grid>
+    </ControlTemplate>
+    <Style TargetType="{x:Type ctl:FormItem}">
+        <Setter Property="Template" Value="{StaticResource FormItemControlTemplate}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,186 @@
+﻿<UserControl
+    x:Class="Cyclone.LicenseManagement.Server.Views.LicenseDetailView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:Cyclone.LicenseManagement.Server.Converters"
+    xmlns:ctl="clr-namespace:Cyclone.LicenseManagement.Server.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Cyclone.LicenseManagement.Server.Views"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Cyclone.LicenseManagement.Server.ViewModels"
+    d:DataContext="{d:DesignInstance vm:LicenseDetailViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ctl:FormItem
+            Grid.Row="0"
+            Label="授权文件地址:"
+            SharedName="T">
+            <TextBox
+                Margin="5,0"
+                BorderThickness="0,0,0,1"
+                IsReadOnly="True" />
+            <ctl:FormItem.AttachedObject>
+                <Button Content="加载授权文件" />
+            </ctl:FormItem.AttachedObject>
+        </ctl:FormItem>
+        <Grid
+            Grid.Row="1"
+            Margin="0,10,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Border
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Padding="5"
+                BorderBrush="DarkGray"
+                BorderThickness="1">
+                <StackPanel Orientation="Vertical">
+                    <ctl:FormItem
+                        Label="序列号:"
+                        SharedName="A">
+                        <TextBlock
+                            Margin="5,0"
+                            Text="{Binding UniqueIdentifier}" />
+                        <ctl:FormItem.AttachedObject>
+                            <Button
+                                Width="75"
+                                Command="{Binding GenerateUniqueIdentifierCommand}"
+                                Content="重新生成" />
+                        </ctl:FormItem.AttachedObject>
+                    </ctl:FormItem>
+                    <ctl:FormItem
+                        Margin="0,5,0,0"
+                        Label="密码:"
+                        SharedName="A">
+                        <TextBox
+                            Margin="5,0"
+                            Text="{Binding Passphrase}" />
+                        <ctl:FormItem.AttachedObject>
+                            <Button
+                                Width="75"
+                                Command="{Binding GenerateLicenseKeypairCommand}"
+                                Content="生成公钥" />
+                        </ctl:FormItem.AttachedObject>
+                    </ctl:FormItem>
+                    <ctl:FormItem
+                        Margin="0,5,0,0"
+                        Label="公钥:"
+                        SharedName="A">
+                        <TextBox
+                            Margin="5,0,0,0"
+                            mah:TextBoxHelper.ClearTextButton="False"
+                            mah:TextBoxHelper.Watermark="生成授权文件之前必须先生成公钥.."
+                            BorderThickness="0"
+                            IsReadOnly="True"
+                            Text="{Binding PublicKey}"
+                            TextWrapping="WrapWithOverflow" />
+                    </ctl:FormItem>
+                    <ctl:FormItem
+                        Margin="0,5,0,0"
+                        Label="签名:"
+                        SharedName="A">
+                        <TextBox
+                            Margin="5,0,0,0"
+                            mah:TextBoxHelper.ClearTextButton="False"
+                            BorderThickness="0"
+                            IsReadOnly="True"
+                            Text="{Binding Signature}"
+                            TextWrapping="WrapWithOverflow" />
+                    </ctl:FormItem>
+                </StackPanel>
+            </Border>
+            <Border
+                Grid.Row="2"
+                Grid.Column="0"
+                Padding="5"
+                BorderBrush="DarkGray"
+                BorderThickness="1">
+                <StackPanel Orientation="Vertical">
+                    <ctl:FormItem
+                        Label="客户名称:"
+                        SharedName="B">
+                        <TextBox
+                            Margin="5,0,0,0"
+                            Text="{Binding CustomerName}" />
+                    </ctl:FormItem>
+                    <ctl:FormItem
+                        Margin="0,5,0,0"
+                        Label="电子邮箱:"
+                        SharedName="B">
+                        <TextBox
+                            Margin="5,0,0,0"
+                            Text="{Binding CustomerEmail}" />
+                    </ctl:FormItem>
+                </StackPanel>
+            </Border>
+            <Border
+                Grid.Row="2"
+                Grid.Column="2"
+                Padding="5"
+                BorderBrush="DarkGray"
+                BorderThickness="1">
+                <StackPanel Orientation="Vertical">
+                    <ctl:FormItem
+                        Margin="0,5,0,0"
+                        Label="类型:"
+                        SharedName="C">
+                        <ComboBox
+                            Margin="5,0,0,0"
+                            SelectedIndex="{Binding SelectedLicenseIndex}">
+                            <ComboBoxItem>正式版</ComboBoxItem>
+                            <ComboBoxItem>试用版</ComboBoxItem>
+                        </ComboBox>
+                    </ctl:FormItem>
+                    <ctl:FormItem
+                        Margin="0,5,0,0"
+                        Label="激活时间(天):"
+                        SharedName="C">
+                        <mah:NumericUpDown
+                            Margin="5,0,0,0"
+                            Maximum="3650"
+                            Minimum="1"
+                            Value="{Binding ActivationDays}" />
+                    </ctl:FormItem>
+                    <ctl:FormItem
+                        Margin="0,5,0,0"
+                        Label="到期时间:"
+                        SharedName="C">
+                        <mah:DateTimePicker
+                            Margin="5,0,0,0"
+                            Culture="zh-CN"
+                            IsReadOnly="True"
+                            SelectedDateTime="{Binding ExpirationDate}" />
+                    </ctl:FormItem>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <UniformGrid
+            Grid.Row="2"
+            Margin="0,5,0,0"
+            Rows="1">
+            <Button
+                Command="{Binding SaveLicenseFileCommand}"
+                Content="保存授权文件" />
+            <Button
+                Margin="5,0,0,0"
+                Content="验证授权文件" />
+        </UniformGrid>
+    </Grid>
+</UserControl>

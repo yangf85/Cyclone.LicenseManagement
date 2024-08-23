@@ -1,0 +1,35 @@
+﻿<Application
+    x:Class="Cyclone.LicenseManagement.Server.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Cyclone.LicenseManagement.Server"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    StartupUri="Views/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+                <ResourceDictionary>
+                    <Style
+                        BasedOn="{StaticResource MahApps.Styles.Button}"
+                        TargetType="Button">
+                        <Setter Property="mah:ControlsHelper.CornerRadius" Value="0" />
+                        <Setter Property="mah:ControlsHelper.FocusBorderThickness" Value="0.5" />
+                    </Style>
+                    <Style
+                        BasedOn="{StaticResource MahApps.Styles.ToggleButton}"
+                        TargetType="ToggleButton">
+                        <Setter Property="mah:ControlsHelper.CornerRadius" Value="0" />
+                        <Setter Property="mah:ControlsHelper.FocusBorderThickness" Value="0.5" />
+                    </Style>
+                    <Style  TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}">
+                        <Setter Property="mah:TextBoxHelper.ClearTextButton" Value="True" />
+                    </Style>
+                </ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/Cyclone.LicenseManagement.Server;component/Controls/FormItem.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
