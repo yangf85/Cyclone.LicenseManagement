@@ -29,5 +29,6 @@
         <Setter Property="Template" Value="{StaticResource FormItemControlTemplate}" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Focusable" Value="False" />
     </Style>
 </ResourceDictionary>

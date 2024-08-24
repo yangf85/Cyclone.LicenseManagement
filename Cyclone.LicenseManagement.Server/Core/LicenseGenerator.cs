@@ -73,10 +73,8 @@ public class LicenseGenerator
     private static string HashPassword(string password, string salt, int iterations = 10000)
     {
         var saltBytes = Convert.FromBase64String(salt);
-        using (var rfc2898 = new Rfc2898DeriveBytes(password, saltBytes, iterations, HashAlgorithmName.SHA256))
-        {
-            return Convert.ToBase64String(rfc2898.GetBytes(32)); // 返回32字节的哈希结果
-        }
+        using var rfc2898 = new Rfc2898DeriveBytes(password, saltBytes, iterations, HashAlgorithmName.SHA256);
+        return Convert.ToBase64String(rfc2898.GetBytes(32)); // 返回32字节的哈希结果
     }
 
     private static bool VerifyPassword(string enteredPassword, string storedHash, string storedSalt, int iterations = 10000)
