@@ -29,25 +29,28 @@ public class LicenseGenerator
         var keyGenerator = KeyGenerator.Create();
         var keyPair = keyGenerator.GenerateKeyPair();
         var password = $"{model.Passphrase}-{model.Salt}";
-        licenseKeypair.PrivateKey = keyPair.ToEncryptedPrivateKeyString(password);
-        licenseKeypair.PublicKey = keyPair.ToPublicKeyString();
+        var privateKey = keyPair.ToEncryptedPrivateKeyString(password);
+        var publicKey = keyPair.ToPublicKeyString();
+
+        licenseKeypair.PrivateKey = privateKey;
+        licenseKeypair.PublicKey = publicKey;
         licenseKeypair.Passphrase = model.Passphrase;
+        licenseKeypair.Salt = model.Salt;
         licenseKeypair.UniqueIdentifier = model.UniqueIdentifier;
         licenseKeypair.LicenseType = model.LicenseType;
         licenseKeypair.ActivationDate = model.ActivationDate;
         licenseKeypair.ActivationDays = model.ActivationDays;
         licenseKeypair.ExpirationDate = model.ExpirationDate;
-        licenseKeypair.MaximumUtilization = model.MaximumUtilization;
-        licenseKeypair.Salt = model.Salt;
+        licenseKeypair.MaximumUtilization = model.Quantity;
 
         var license = License.New()
             .WithUniqueIdentifier(model.UniqueIdentifier)
             .As(model.LicenseType)
             .ExpiresAt(model.ExpirationDate)
-            .WithMaximumUtilization(1)
-            .WithProductFeatures(new Dictionary<string, string>()
+            .WithMaximumUtilization(model.Quantity)
+            .WithAdditionalAttributes(new Dictionary<string, string>()
             {
-                { "PublicKey", model.PublicKey },
+                { "PublicKey", publicKey },
                 { "ActivationDate", model.ActivationDate.ToString("yyyy-MM-dd") },
                 { "ActivationDays", model.ActivationDays.ToString() }
             })
@@ -60,7 +63,7 @@ public class LicenseGenerator
     private static void SaveKeypair(string path, LicenseKeypair licenseKeypair)
     {
         var serializer = new XmlSerializer(typeof(LicenseKeypair));
-        XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+        var namespaces = new XmlSerializerNamespaces();
         namespaces.Add(string.Empty, string.Empty); // 去掉命名空间
         using var writer = new StringWriter();
         serializer.Serialize(writer, licenseKeypair, namespaces);

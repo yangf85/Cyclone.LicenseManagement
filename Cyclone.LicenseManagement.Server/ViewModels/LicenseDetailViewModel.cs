@@ -14,11 +14,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Cyclone.LicenseManagement.Client;
 
 namespace Cyclone.LicenseManagement.Server.ViewModels
 {
     public partial class LicenseDetailViewModel : ObservableValidator
     {
+        [ObservableProperty]
+        private bool _isGeneration;
+
         [ObservableProperty]
         private Guid _uniqueIdentifier;
 
@@ -43,7 +47,7 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
         private string _publicKey;
 
         [ObservableProperty]
-        private int _maximumUtilization;
+        private int _quantity;
 
         [ObservableProperty]
         private string _signature;
@@ -52,8 +56,10 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
 
         private License _license;
 
-        [Required(ErrorMessage = "密码口令是必填项。")]
-        [StringLength(36, MinimumLength = 12, ErrorMessage = "密码口令的长度必须在 12 到 36 个字符之间。")]
+        [ObservableProperty]
+        private bool? _validateResult;
+
+        [Required]
         public string Passphrase
         {
             get => _passphrase;
@@ -64,7 +70,7 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
             }
         }
 
-        [Required(ErrorMessage = "客户名称是必填项。")]
+        [Required]
         public string CustomerName
         {
             get => _customerName;
@@ -75,8 +81,8 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
             }
         }
 
-        [Required(ErrorMessage = "客户电子邮件是必填项。")]
-        [EmailAddress(ErrorMessage = "请输入有效的电子邮件地址。")]
+        [Required]
+        [EmailAddress]
         public string CustomerEmail
         {
             get => _customerEmail;
@@ -117,6 +123,12 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
 
         public LicenseDetailViewModel()
         {
+            Init();
+        }
+
+        private void Init()
+        {
+            IsGeneration = true;
             SelectedLicenseIndex = 0;
             UniqueIdentifier = Guid.NewGuid();
             LicenseType = LicenseType.Trial;
@@ -124,47 +136,107 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
             CustomerEmail = string.Empty;
             PublicKey = string.Empty;
             Passphrase = string.Empty;
-            MaximumUtilization = 1;
+            Signature = string.Empty;
+            Quantity = 1;
             ActivationDays = 30;
             ExpirationDate = DateTime.Now.AddDays(ActivationDays);
         }
 
         [RelayCommand]
-        private Task GenerateUniqueIdentifier()
+        private void GenerateUniqueIdentifier()
         {
             UniqueIdentifier = Guid.NewGuid();
-            return Task.CompletedTask;
         }
 
         private bool CanGenerateLicenseKeypair() => !HasErrors;
 
         [RelayCommand(CanExecute = nameof(CanGenerateLicenseKeypair))]
-        private Task GenerateLicenseKeypair()
+        private void GenerateLicenseKeypair()
         {
             _license = LicenseGenerator.Generate(this.Adapt<LicenseDetail>(), out _licenseKeypair);
 
             Signature = _license.Signature;
             PublicKey = _licenseKeypair.PublicKey;
-
-            return Task.CompletedTask;
         }
 
-        private bool CanSaveLicenseFile() => !string.IsNullOrWhiteSpace(PublicKey);
+        private bool CanSaveLicenseFile()
+        {
+            return !HasErrors && !string.IsNullOrWhiteSpace(PublicKey) && IsGeneration;
+        }
 
         [RelayCommand(CanExecute = nameof(CanSaveLicenseFile))]
-        private Task SaveLicenseFile()
+        private void SaveLicenseFile()
         {
-            var saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "License Files (*.lic)|*.lic";
-            saveFileDialog.FileName = $"{CustomerName}-{CustomerEmail}.lic";
-            if (saveFileDialog.ShowDialog() == true)
+            try
             {
-                var model = this.Adapt<LicenseDetail>();
-                model.Salt = "this is a salt";
-                LicenseGenerator.Save(saveFileDialog.FileName, model);
+                var saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "License Files (*.lic)|*.lic";
+                saveFileDialog.FileName = $"{CustomerName}-{CustomerEmail}.lic";
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    var model = this.Adapt<LicenseDetail>();
+                    model.Salt = "this is a salt";
+                    LicenseGenerator.Save(saveFileDialog.FileName, model);
+                }
             }
-
-            return Task.CompletedTask;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
+        [RelayCommand]
+        private void LoadLicenseFile()
+        {
+            try
+            {
+                var openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "License Files (*.lic)|*.lic";
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    _license = LicenseValidator.Read(openFileDialog.FileName);
+                    CustomerName = _license.Customer.Name;
+                    CustomerEmail = _license.Customer.Email;
+                    UniqueIdentifier = _license.Id;
+                    LicenseType = _license.Type;
+                    ExpirationDate = _license.Expiration;
+                    Quantity = _license.Quantity;
+                    PublicKey = _license.AdditionalAttributes.Get("PublicKey");
+                    ActivationDays = int.Parse(_license.AdditionalAttributes.Get("ActivationDays"));
+                    Signature = _license.Signature;
+                }
+                IsGeneration = false;
+                ValidateLicenseCommand.NotifyCanExecuteChanged();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        [RelayCommand]
+        private void UnloadLicenseFile()
+        {
+            _license = null;
+            Init();
+            IsGeneration = true;
+            ValidateResult = null;
+            ValidateLicenseCommand.NotifyCanExecuteChanged();
+        }
+
+        [RelayCommand(CanExecute = nameof(CanValidateLicense))]
+        private void ValidateLicense()
+        {
+            try
+            {
+                ValidateResult = LicenseValidator.Validate(_license);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private bool CanValidateLicense() => !IsGeneration && _license != null;
     }
 }

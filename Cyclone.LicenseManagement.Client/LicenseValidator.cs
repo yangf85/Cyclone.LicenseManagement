@@ -1,36 +1,34 @@
 ﻿using Standard.Licensing;
+using Standard.Licensing.Validation;
 using System.Xml.Serialization;
 
 namespace Cyclone.LicenseManagement.Client;
 
 public class LicenseValidator
 {
-    public static bool Validate(string licenseFilePath)
+    public static License Read(string path)
     {
-        License license = null;
+        var licenseContent = File.ReadAllText(path);
+        var license = License.Load(licenseContent);
+        return license;
+    }
 
+    public static bool Validate(License license)
+    {
         try
         {
-            // 读取许可证文件
-            var licenseContent = File.ReadAllText(licenseFilePath);
-            license = License.Load(licenseContent);
-
             // 提取公共密钥
-            var publicKey = license.ProductFeatures.Get("PublicKey").ToString();
+            var publicKey = license.AdditionalAttributes.Get("PublicKey");
 
             // 验证许可证签名
-            if (!license.VerifySignature(publicKey))
-            {
-                return false;
-            }
+            var errors = license.Validate()
+                                .ExpirationDate()
+                                .When(i => i.Type == LicenseType.Standard)
+                                .And()
+                                .Signature(publicKey)
+                                .AssertValidLicense();
 
-            // 验证许可证的有效期
-            if (license.Expiration < DateTime.Now)
-            {
-                return false;
-            }
-
-            return true;
+            return !errors.Any();
         }
         catch (Exception)
         {

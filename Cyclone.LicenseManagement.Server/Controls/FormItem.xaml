@@ -3,12 +3,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ctl="clr-namespace:Cyclone.LicenseManagement.Server.Controls">
 
-    <ControlTemplate
-        x:Key="FormItemControlTemplate"
-        TargetType="{x:Type ctl:FormItem}">
+    <ControlTemplate x:Key="FormItemControlTemplate" TargetType="{x:Type ctl:FormItem}">
         <Grid HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition SharedSizeGroup="{TemplateBinding SharedName}" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="{TemplateBinding SharedName}" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>

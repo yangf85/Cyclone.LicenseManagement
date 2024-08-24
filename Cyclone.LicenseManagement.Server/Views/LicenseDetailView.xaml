@@ -8,6 +8,7 @@
     xmlns:local="clr-namespace:Cyclone.LicenseManagement.Server.Views"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:p="clr-namespace:Cyclone.LicenseManagement.Server.Properties"
     xmlns:vm="clr-namespace:Cyclone.LicenseManagement.Server.ViewModels"
     d:DataContext="{d:DesignInstance vm:LicenseDetailViewModel}"
     d:DesignHeight="450"
@@ -15,35 +16,15 @@
     mc:Ignorable="d">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <ctl:FormItem
-            Grid.Row="0"
-            Label="授权文件地址:"
-            SharedName="T">
-            <TextBox
-                Margin="5,0"
-                BorderThickness="0,0,0,1"
-                IsReadOnly="True" />
-            <ctl:FormItem.AttachedObject>
-                <Button Content="加载授权文件" />
-            </ctl:FormItem.AttachedObject>
-        </ctl:FormItem>
-        <Grid
-            Grid.Row="1"
-            Margin="0,10,0,0">
+        <Grid Grid.Row="0" IsEnabled="{Binding IsGeneration}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="5" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
             <Border
                 Grid.Row="0"
                 Grid.Column="0"
@@ -53,40 +34,59 @@
                 BorderThickness="1">
                 <StackPanel Orientation="Vertical">
                     <ctl:FormItem
-                        Label="序列号:"
+                        Margin="0,5,0,0"
+                        Label="{I18N {x:Static p:LangKeys.Customer_Name_}}"
                         SharedName="A">
-                        <TextBlock
-                            Margin="5,0"
-                            Text="{Binding UniqueIdentifier}" />
+                        <TextBox Margin="5,0,0,0" Text="{Binding CustomerName}" />
+                    </ctl:FormItem>
+                    <ctl:FormItem
+                        Margin="0,5,0,0"
+                        Label="{I18N {x:Static p:LangKeys.Email_}}"
+                        SharedName="A">
+                        <TextBox Margin="5,0,0,0" Text="{Binding CustomerEmail}" />
+                    </ctl:FormItem>
+                    <ctl:FormItem
+                        Margin="0,5,0,0"
+                        Label="{I18N {x:Static p:LangKeys.Password_}}"
+                        SharedName="A">
+                        <TextBox Margin="5,0" Text="{Binding Passphrase}" />
                         <ctl:FormItem.AttachedObject>
-                            <Button
-                                Width="75"
-                                Command="{Binding GenerateUniqueIdentifierCommand}"
-                                Content="重新生成" />
+                            <Button Width="100" Command="{Binding GenerateLicenseKeypairCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <mah:FontIcon Glyph="&#xe9db;" />
+                                    <TextBlock
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Text="{I18N {x:Static p:LangKeys.Generate_Key}}" />
+                                </StackPanel>
+                            </Button>
                         </ctl:FormItem.AttachedObject>
                     </ctl:FormItem>
                     <ctl:FormItem
                         Margin="0,5,0,0"
-                        Label="密码:"
+                        Label="{I18N {x:Static p:LangKeys.Serial_Number_}}"
                         SharedName="A">
-                        <TextBox
-                            Margin="5,0"
-                            Text="{Binding Passphrase}" />
+                        <TextBlock Margin="5,0" Text="{Binding UniqueIdentifier}" />
                         <ctl:FormItem.AttachedObject>
-                            <Button
-                                Width="75"
-                                Command="{Binding GenerateLicenseKeypairCommand}"
-                                Content="生成公钥" />
+                            <Button Width="100" Command="{Binding GenerateUniqueIdentifierCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <mah:FontIcon Glyph="&#xe99d;" />
+                                    <TextBlock
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Text="{I18N {x:Static p:LangKeys.Regenerate}}" />
+                                </StackPanel>
+                            </Button>
                         </ctl:FormItem.AttachedObject>
                     </ctl:FormItem>
                     <ctl:FormItem
                         Margin="0,5,0,0"
-                        Label="公钥:"
+                        Label="{I18N {x:Static p:LangKeys.Public_Key_}}"
                         SharedName="A">
                         <TextBox
                             Margin="5,0,0,0"
                             mah:TextBoxHelper.ClearTextButton="False"
-                            mah:TextBoxHelper.Watermark="生成授权文件之前必须先生成公钥.."
+                            mah:TextBoxHelper.Watermark="{I18N {x:Static p:LangKeys.Must_generate_key_before_saving_license_file___}}"
                             BorderThickness="0"
                             IsReadOnly="True"
                             Text="{Binding PublicKey}"
@@ -94,7 +94,7 @@
                     </ctl:FormItem>
                     <ctl:FormItem
                         Margin="0,5,0,0"
-                        Label="签名:"
+                        Label="{I18N {x:Static p:LangKeys.Signature_}}"
                         SharedName="A">
                         <TextBox
                             Margin="5,0,0,0"
@@ -108,79 +108,125 @@
             </Border>
             <Border
                 Grid.Row="2"
-                Grid.Column="0"
                 Padding="5"
                 BorderBrush="DarkGray"
                 BorderThickness="1">
-                <StackPanel Orientation="Vertical">
-                    <ctl:FormItem
-                        Label="客户名称:"
-                        SharedName="B">
-                        <TextBox
-                            Margin="5,0,0,0"
-                            Text="{Binding CustomerName}" />
-                    </ctl:FormItem>
-                    <ctl:FormItem
-                        Margin="0,5,0,0"
-                        Label="电子邮箱:"
-                        SharedName="B">
-                        <TextBox
-                            Margin="5,0,0,0"
-                            Text="{Binding CustomerEmail}" />
-                    </ctl:FormItem>
-                </StackPanel>
-            </Border>
-            <Border
-                Grid.Row="2"
-                Grid.Column="2"
-                Padding="5"
-                BorderBrush="DarkGray"
-                BorderThickness="1">
-                <StackPanel Orientation="Vertical">
-                    <ctl:FormItem
-                        Margin="0,5,0,0"
-                        Label="类型:"
-                        SharedName="C">
-                        <ComboBox
-                            Margin="5,0,0,0"
-                            SelectedIndex="{Binding SelectedLicenseIndex}">
-                            <ComboBoxItem>正式版</ComboBoxItem>
-                            <ComboBoxItem>试用版</ComboBoxItem>
-                        </ComboBox>
-                    </ctl:FormItem>
-                    <ctl:FormItem
-                        Margin="0,5,0,0"
-                        Label="激活时间(天):"
-                        SharedName="C">
-                        <mah:NumericUpDown
-                            Margin="5,0,0,0"
-                            Maximum="3650"
-                            Minimum="1"
-                            Value="{Binding ActivationDays}" />
-                    </ctl:FormItem>
-                    <ctl:FormItem
-                        Margin="0,5,0,0"
-                        Label="到期时间:"
-                        SharedName="C">
-                        <mah:DateTimePicker
-                            Margin="5,0,0,0"
-                            Culture="zh-CN"
-                            IsReadOnly="True"
-                            SelectedDateTime="{Binding ExpirationDate}" />
-                    </ctl:FormItem>
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Vertical">
+                        <ctl:FormItem Label="{I18N {x:Static p:LangKeys.License_Type_}}" SharedName="B">
+                            <ComboBox Margin="5,0,0,0" SelectedIndex="{Binding SelectedLicenseIndex}">
+                                <ComboBoxItem Content="{I18N {x:Static p:LangKeys.Standard}}" />
+                                <ComboBoxItem Content="{I18N {x:Static p:LangKeys.Trial}}" />
+                            </ComboBox>
+                        </ctl:FormItem>
+                        <ctl:FormItem
+                            Margin="0,5,0,0"
+                            Label="{I18N {x:Static p:LangKeys.License_Count_}}"
+                            SharedName="B">
+                            <mah:NumericUpDown
+                                Margin="5,0,0,0"
+                                Maximum="99"
+                                Minimum="1"
+                                Value="{Binding Quantity}" />
+                        </ctl:FormItem>
+                        <ctl:FormItem
+                            Margin="0,5,0,0"
+                            Label="{I18N {x:Static p:LangKeys.Activation_Days_}}"
+                            SharedName="B">
+                            <mah:NumericUpDown
+                                Margin="5,0,0,0"
+                                Maximum="3650"
+                                Minimum="1"
+                                Value="{Binding ActivationDays}" />
+                        </ctl:FormItem>
+                        <ctl:FormItem
+                            Margin="0,5,0,0"
+                            Label="{I18N {x:Static p:LangKeys.Expiration_Date_}}"
+                            SharedName="B">
+                            <mah:DateTimePicker
+                                Margin="5,0,0,0"
+                                Culture="zh-CN"
+                                IsReadOnly="True"
+                                SelectedDateTime="{Binding ExpirationDate}" />
+                        </ctl:FormItem>
+                    </StackPanel>
+                    <Border
+                        Grid.Column="1"
+                        Width="150"
+                        Margin="5,0,0,0"
+                        Background="#F5F5F5">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontFamily="{StaticResource IconFont}"
+                            FontSize="56">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ValidateResult}" Value="True">
+                                            <Setter Property="Text" Value="&#xe9d9;" />
+                                            <Setter Property="Foreground" Value="Green" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ValidateResult}" Value="False">
+                                            <Setter Property="Text" Value="&#xe9da;" />
+                                            <Setter Property="Foreground" Value="Red" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ValidateResult}" Value="{x:Null}">
+                                            <Setter Property="Text" Value="&#xe61b;" />
+                                            <Setter Property="Foreground" Value="DarkOrange" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Border>
+                </Grid>
             </Border>
         </Grid>
         <UniformGrid
-            Grid.Row="2"
+            Grid.Row="1"
             Margin="0,5,0,0"
             Rows="1">
-            <Button
-                Command="{Binding SaveLicenseFileCommand}"
-                Content="保存授权文件" />
-            <Button
-                Margin="5,0,0,0"
-                Content="验证授权文件" />
+            <Button Command="{Binding SaveLicenseFileCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <mah:FontIcon Glyph="&#xe9c2;" />
+                    <TextBlock
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="{I18N {x:Static p:LangKeys.Save_License_File}}" />
+                </StackPanel>
+            </Button>
+            <Button Margin="5,0" Command="{Binding LoadLicenseFileCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <mah:FontIcon Glyph="&#xeac5;" />
+                    <TextBlock
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="{I18N {x:Static p:LangKeys.Load_License_File}}" />
+                </StackPanel>
+            </Button>
+            <Button Margin="0,0,5,0" Command="{Binding UnloadLicenseFileCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <mah:FontIcon Glyph="&#xeac6;" />
+                    <TextBlock
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="{I18N {x:Static p:LangKeys.Clear_License_File}}" />
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding ValidateLicenseCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <mah:FontIcon Glyph="&#xe9d8;" />
+                    <TextBlock
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="{I18N {x:Static p:LangKeys.Validate_License_File}}" />
+                </StackPanel>
+            </Button>
         </UniformGrid>
     </Grid>
 </UserControl>

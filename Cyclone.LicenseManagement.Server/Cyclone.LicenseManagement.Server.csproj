@@ -5,10 +5,39 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <PublishSingleFile>true</PublishSingleFile>
+	  <SelfContained>true</SelfContained>
+	  <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <UseWPF>true</UseWPF>
-    <AssemblyVersion>1.24.8.0</AssemblyVersion>
-    <FileVersion>1.24.8.0</FileVersion>
+    <AssemblyVersion>0.24.8.0</AssemblyVersion>
+    <FileVersion>0.24.8.0</FileVersion>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Title>LicenseManagement</Title>
+    <Description>许可证管理</Description>
+    <ApplicationIcon>Logo.ico</ApplicationIcon>
+    <PackageIcon>Logo.png</PackageIcon>
+    <Copyright>CopyRight@2024</Copyright>
+    <Company>Cyclone</Company>
+    <Authors>YangF</Authors>
+    <Product>许可证管理</Product>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\iconfont.ttf" />
+    <None Remove="Assets\logo.ico" />
+    <None Remove="Assets\Logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\Cyclone.LicenseManagement.Client\Logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Antelcat.I18N.WPF" Version="1.0.1" />
@@ -16,6 +45,34 @@
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />
     <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="Standard.Licensing" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cyclone.LicenseManagement.Client\Cyclone.LicenseManagement.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\iconfont.ttf" />
+    <Resource Include="Assets\Logo.ico" />
+    <Resource Include="Assets\Logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+	  <EmbeddedResource Update="Properties\Resources.zh.resx">
+		  <DependentUpon>Resources.resx</DependentUpon>
+	  </EmbeddedResource>
   </ItemGroup>
 
 </Project>

@@ -8,26 +8,34 @@
     xmlns:local="clr-namespace:Cyclone.LicenseManagement.Server"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:p="clr-namespace:Cyclone.LicenseManagement.Server.Properties"
     xmlns:vm="clr-namespace:Cyclone.LicenseManagement.Server.ViewModels"
     xmlns:vw="clr-namespace:Cyclone.LicenseManagement.Server.Views"
-    Title="授权文件生成器"
-    Width="640"
+    Title="{I18N {x:Static p:LangKeys.License_File_Management}}"
+    Width="720"
     d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
     d:DesignHeight="450"
+    Icon="/Assets/Logo.ico"
     SizeToContent="Height"
     WindowStartupLocation="CenterScreen"
+    WindowTitleBrush="#01579B"
     mc:Ignorable="d">
-    <mah:MetroWindow.Resources>
-        <ResourceDictionary />
-    </mah:MetroWindow.Resources>
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
-            <mah:SplitButton SelectedIndex="0">
-                <mah:SplitButton.Items>
-                    <ComboBoxItem Content="简体中文" />
-                    <ComboBoxItem Content="英文" />
-                </mah:SplitButton.Items>
-            </mah:SplitButton>
+            <ComboBox
+                Background="Transparent"
+                BorderThickness="0"
+                Foreground="White"
+                SelectedIndex="{Binding LangIndex, UpdateSourceTrigger=PropertyChanged}">
+                <ComboBoxItem
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Content="{I18N {x:Static p:LangKeys.English}}" />
+                <ComboBoxItem
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Content="{I18N {x:Static p:LangKeys.Chinese}}" />
+            </ComboBox>
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
     <vw:LicenseDetailView />

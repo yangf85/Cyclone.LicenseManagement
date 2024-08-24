@@ -16,13 +16,11 @@ public class LicenseDetail
 
     public DateTime ActivationDate { get; set; }
 
-    public int MaximumUtilization { get; set; }
+    public int Quantity { get; set; }
 
     public string Passphrase { get; set; }
 
     public int ActivationDays { get; set; }
-
-    public string PublicKey { get; set; }
 
     public string Salt { get; set; }
 
@@ -33,7 +31,7 @@ public class LicenseDetail
         CustomerName = string.Empty;
         CustomerEmail = string.Empty;
         Passphrase = string.Empty;
-        MaximumUtilization = 1;
+        Quantity = 1;
         ActivationDays = 30;
         ActivationDate = DateTime.Now;
         ExpirationDate = ActivationDate.AddDays(ActivationDays);

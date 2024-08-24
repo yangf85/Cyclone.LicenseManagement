@@ -6,9 +6,9 @@ using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cyclone.LicenseManagement.Server;
+namespace Cyclone.LicenseManagement.Server.Properties;
 
-//[ResourceKeysOf(typeof(Resources))]
+[ResourceKeysOf(typeof(Resources))]
 public static partial class LangKeys
 {
 }
