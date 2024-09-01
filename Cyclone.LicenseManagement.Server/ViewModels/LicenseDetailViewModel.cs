@@ -57,7 +57,7 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
         private License _license;
 
         [ObservableProperty]
-        private bool? _validateResult;
+        private bool? _isLicenseValid;
 
         [Required]
         public string Passphrase
@@ -220,7 +220,7 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
             _license = null;
             Init();
             IsGeneration = true;
-            ValidateResult = null;
+            IsLicenseValid = null;
             ValidateLicenseCommand.NotifyCanExecuteChanged();
         }
 
@@ -229,7 +229,7 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
         {
             try
             {
-                ValidateResult = LicenseValidator.Validate(_license);
+                IsLicenseValid = LicenseValidator.Validate(_license).IsValid;
             }
             catch (Exception ex)
             {

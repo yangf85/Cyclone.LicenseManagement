@@ -13,8 +13,9 @@ public class LicenseValidator
         return license;
     }
 
-    public static bool Validate(License license)
+    public static ValidationResult Validate(License license)
     {
+        var result = new ValidationResult();
         try
         {
             // 提取公共密钥
@@ -28,11 +29,24 @@ public class LicenseValidator
                                 .Signature(publicKey)
                                 .AssertValidLicense();
 
-            return !errors.Any();
+            // 检查验证结果
+            if (errors.Any())
+            {
+                foreach (var error in errors)
+                {
+                    result.ErrorMessage += $"{error.Message} \n";
+                }
+                return result;
+            }
+
+            result.IsValid = true;
+
+            return result;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return false;
+            result.ErrorMessage = ex.Message;
+            return result;
         }
     }
 }
