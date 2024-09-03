@@ -133,6 +133,15 @@ namespace Cyclone.LicenseManagement.Server.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Hardware 的本地化字符串。
+        /// </summary>
+        internal static string Hardware {
+            get {
+                return ResourceManager.GetString("Hardware", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 License Count: 的本地化字符串。
         /// </summary>
         internal static string License_Count_ {

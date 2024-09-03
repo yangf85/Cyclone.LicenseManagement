@@ -183,4 +183,7 @@
   <data name="License File Management" xml:space="preserve">
     <value>License File Management</value>
   </data>
+  <data name="Hardware" xml:space="preserve">
+    <value>Hardware</value>
+  </data>
 </root>

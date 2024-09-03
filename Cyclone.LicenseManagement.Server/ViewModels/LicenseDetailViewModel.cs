@@ -15,11 +15,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Cyclone.LicenseManagement.Client;
+using System.Collections.ObjectModel;
+using Cyclone.LicenseManagement.Server.Properties;
 
 namespace Cyclone.LicenseManagement.Server.ViewModels
 {
     public partial class LicenseDetailViewModel : ObservableValidator
     {
+        public ObservableCollection<AdditionalFeatureViewModel> AdditionalFeatures { get; private set; }
+
         [ObservableProperty]
         private bool _isGeneration;
 
@@ -140,6 +144,21 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
             Quantity = 1;
             ActivationDays = 30;
             ExpirationDate = DateTime.Now.AddDays(ActivationDays);
+
+            AdditionalFeatures = new();
+            AdditionalFeatures.Add(new AdditionalFeatureViewModel() { Label = LangKeys.Hardware, Value = string.Empty });
+        }
+
+        [RelayCommand]
+        private void RemoveAdditionalFeature(AdditionalFeatureViewModel additionalFeature)
+        {
+            AdditionalFeatures.Remove(additionalFeature);
+        }
+
+        [RelayCommand]
+        private void AddAdditionalFeature()
+        {
+            AdditionalFeatures.Add(new AdditionalFeatureViewModel());
         }
 
         [RelayCommand]

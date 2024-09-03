@@ -183,4 +183,7 @@
   <data name="License File Management" xml:space="preserve">
     <value>许可证文件管理</value>
   </data>
+  <data name="Hardware" xml:space="preserve">
+    <value>硬件信息</value>
+  </data>
 </root>
