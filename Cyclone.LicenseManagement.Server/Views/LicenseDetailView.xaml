@@ -19,9 +19,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid
-            Grid.Row="0"
-            IsEnabled="{Binding IsGeneration}">
+        <Grid Grid.Row="0" IsEnabled="{Binding IsGeneration}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="5" />
@@ -31,7 +29,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition MinWidth="360" />
                 </Grid.ColumnDefinitions>
                 <Border
                     Grid.Column="0"
@@ -43,29 +41,21 @@
                             Margin="0,5,0,0"
                             Label="{I18N {x:Static p:LangKeys.Customer_Name_}}"
                             SharedName="A">
-                            <TextBox
-                                Margin="5,0,0,0"
-                                Text="{Binding CustomerName}" />
+                            <TextBox Margin="5,0,0,0" Text="{Binding CustomerName}" />
                         </ctl:FormItem>
                         <ctl:FormItem
                             Margin="0,5,0,0"
                             Label="{I18N {x:Static p:LangKeys.Email_}}"
                             SharedName="A">
-                            <TextBox
-                                Margin="5,0,0,0"
-                                Text="{Binding CustomerEmail}" />
+                            <TextBox Margin="5,0,0,0" Text="{Binding CustomerEmail}" />
                         </ctl:FormItem>
                         <ctl:FormItem
                             Margin="0,5,0,0"
                             Label="{I18N {x:Static p:LangKeys.Password_}}"
                             SharedName="A">
-                            <TextBox
-                                Margin="5,0"
-                                Text="{Binding Passphrase}" />
+                            <PasswordBox Margin="5,0" mah:PasswordBoxBindingBehavior.Password="{Binding Passphrase}" />
                             <ctl:FormItem.AttachedObject>
-                                <Button
-                                    Width="100"
-                                    Command="{Binding GenerateLicenseKeypairCommand}">
+                                <Button Width="100" Command="{Binding GenerateLicenseKeypairCommand}">
                                     <StackPanel Orientation="Horizontal">
                                         <mah:FontIcon Glyph="&#xe9db;" />
                                         <TextBlock
@@ -80,13 +70,9 @@
                             Margin="0,5,0,0"
                             Label="{I18N {x:Static p:LangKeys.Serial_Number_}}"
                             SharedName="A">
-                            <TextBlock
-                                Margin="5,0"
-                                Text="{Binding UniqueIdentifier}" />
+                            <TextBlock Margin="5,0" Text="{Binding UniqueIdentifier}" />
                             <ctl:FormItem.AttachedObject>
-                                <Button
-                                    Width="100"
-                                    Command="{Binding GenerateUniqueIdentifierCommand}">
+                                <Button Width="100" Command="{Binding GenerateUniqueIdentifierCommand}">
                                     <StackPanel Orientation="Horizontal">
                                         <mah:FontIcon Glyph="&#xe99d;" />
                                         <TextBlock
@@ -133,44 +119,47 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <UniformGrid
-                            Grid.Row="0"
-                            Rows="1">
-                            <Button
-                                Command="{Binding AddAdditionalFeatureCommand}"
-                                Content="Add" />
-                            <Button
-                                Command="{Binding RemoveAdditionalFeatureCommand}"
-                                Content="Remove" />
+                        <UniformGrid Grid.Row="0" Rows="1">
+                            <Button Command="{Binding AddAdditionalFeatureCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <mah:FontIcon Glyph="&#xe892;" />
+                                    <TextBlock
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Text="{I18N {x:Static p:LangKeys.Add}}" />
+                                </StackPanel>
+                            </Button>
+                            <Button Command="{Binding RemoveAdditionalFeatureCommand}" CommandParameter="{Binding ElementName=AdditionalFeaturesListBox, Path=SelectedItem}">
+                                <StackPanel Orientation="Horizontal">
+                                    <mah:FontIcon Glyph="&#xe891;" />
+                                    <TextBlock
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Text="{I18N {x:Static p:LangKeys.Remove}}" />
+                                </StackPanel>
+                            </Button>
                         </UniformGrid>
                         <ListBox
+                            x:Name="AdditionalFeaturesListBox"
                             Grid.Row="1"
                             Margin="0,5,0,0"
                             ItemsSource="{Binding AdditionalFeatures}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate DataType="vm:AdditionalFeatureViewModel">
                                     <StackPanel Orientation="Vertical">
-
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="3*" />
-                                                <ColumnDefinition Width="5*" />
-                                                <ColumnDefinition Width="3*" />
-                                                <ColumnDefinition Width="5*" />
-                                                <ColumnDefinition Width="2*" />
-                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label
-                                                Grid.Column="0"
-                                                Content="Name: " />
-                                            <TextBox
-                                                Grid.Column="1"
-                                                Margin="5,0,0,0"
-                                                Text="{Binding Label}" />
+                                            <Label Grid.Column="0" Content="{I18N {x:Static p:LangKeys.Key}}" />
+                                            <TextBox Grid.Column="1" Text="{Binding Key}" />
                                             <Label
                                                 Grid.Column="2"
                                                 Margin="5,0,0,0"
-                                                Content="Value: " />
+                                                Content="{I18N {x:Static p:LangKeys.Value}}" />
                                             <TextBox
                                                 Grid.Column="3"
                                                 Margin="5,0,0,0"
@@ -194,15 +183,9 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <StackPanel
-                        Grid.Column="0"
-                        Orientation="Vertical">
-                        <ctl:FormItem
-                            Label="{I18N {x:Static p:LangKeys.License_Type_}}"
-                            SharedName="B">
-                            <ComboBox
-                                Margin="5,0,0,0"
-                                SelectedIndex="{Binding SelectedLicenseIndex}">
+                    <StackPanel Grid.Column="0" Orientation="Vertical">
+                        <ctl:FormItem Label="{I18N {x:Static p:LangKeys.License_Type_}}" SharedName="B">
+                            <ComboBox Margin="5,0,0,0" SelectedIndex="{Binding SelectedLicenseIndex, Mode=TwoWay}">
                                 <ComboBoxItem Content="{I18N {x:Static p:LangKeys.Standard}}" />
                                 <ComboBoxItem Content="{I18N {x:Static p:LangKeys.Trial}}" />
                             </ComboBox>
@@ -251,21 +234,15 @@
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Style.Triggers>
-                                        <DataTrigger
-                                            Binding="{Binding ValidateResult}"
-                                            Value="True">
+                                        <DataTrigger Binding="{Binding IsLicenseValid}" Value="True">
                                             <Setter Property="Text" Value="&#xe9d9;" />
                                             <Setter Property="Foreground" Value="Green" />
                                         </DataTrigger>
-                                        <DataTrigger
-                                            Binding="{Binding ValidateResult}"
-                                            Value="False">
+                                        <DataTrigger Binding="{Binding IsLicenseValid}" Value="False">
                                             <Setter Property="Text" Value="&#xe9da;" />
                                             <Setter Property="Foreground" Value="Red" />
                                         </DataTrigger>
-                                        <DataTrigger
-                                            Binding="{Binding ValidateResult}"
-                                            Value="{x:Null}">
+                                        <DataTrigger Binding="{Binding IsLicenseValid}" Value="{x:Null}">
                                             <Setter Property="Text" Value="&#xe61b;" />
                                             <Setter Property="Foreground" Value="DarkOrange" />
                                         </DataTrigger>
@@ -290,9 +267,7 @@
                         Text="{I18N {x:Static p:LangKeys.Save_License_File}}" />
                 </StackPanel>
             </Button>
-            <Button
-                Margin="5,0"
-                Command="{Binding LoadLicenseFileCommand}">
+            <Button Margin="5,0" Command="{Binding LoadLicenseFileCommand}">
                 <StackPanel Orientation="Horizontal">
                     <mah:FontIcon Glyph="&#xeac5;" />
                     <TextBlock
@@ -301,9 +276,7 @@
                         Text="{I18N {x:Static p:LangKeys.Load_License_File}}" />
                 </StackPanel>
             </Button>
-            <Button
-                Margin="0,0,5,0"
-                Command="{Binding UnloadLicenseFileCommand}">
+            <Button Margin="0,0,5,0" Command="{Binding UnloadLicenseFileCommand}">
                 <StackPanel Orientation="Horizontal">
                     <mah:FontIcon Glyph="&#xeac6;" />
                     <TextBlock

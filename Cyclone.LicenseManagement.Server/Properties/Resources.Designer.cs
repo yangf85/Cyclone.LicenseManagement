@@ -70,6 +70,15 @@ namespace Cyclone.LicenseManagement.Server.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Add 的本地化字符串。
+        /// </summary>
+        internal static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Chinese 的本地化字符串。
         /// </summary>
         internal static string Chinese {
@@ -138,6 +147,15 @@ namespace Cyclone.LicenseManagement.Server.Properties {
         internal static string Hardware {
             get {
                 return ResourceManager.GetString("Hardware", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Key 的本地化字符串。
+        /// </summary>
+        internal static string Key {
+            get {
+                return ResourceManager.GetString("Key", resourceCulture);
             }
         }
         
@@ -214,6 +232,15 @@ namespace Cyclone.LicenseManagement.Server.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Remove 的本地化字符串。
+        /// </summary>
+        internal static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Save License File 的本地化字符串。
         /// </summary>
         internal static string Save_License_File {
@@ -264,6 +291,15 @@ namespace Cyclone.LicenseManagement.Server.Properties {
         internal static string Validate_License_File {
             get {
                 return ResourceManager.GetString("Validate License File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Value 的本地化字符串。
+        /// </summary>
+        internal static string Value {
+            get {
+                return ResourceManager.GetString("Value", resourceCulture);
             }
         }
     }

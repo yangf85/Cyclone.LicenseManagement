@@ -34,26 +34,38 @@ public class LicenseGenerator
 
         licenseKeypair.PrivateKey = privateKey;
         licenseKeypair.PublicKey = publicKey;
-        licenseKeypair.Passphrase = model.Passphrase;
         licenseKeypair.Salt = model.Salt;
         licenseKeypair.UniqueIdentifier = model.UniqueIdentifier;
         licenseKeypair.LicenseType = model.LicenseType;
         licenseKeypair.ActivationDate = model.ActivationDate;
         licenseKeypair.ActivationDays = model.ActivationDays;
         licenseKeypair.ExpirationDate = model.ExpirationDate;
-        licenseKeypair.MaximumUtilization = model.Quantity;
+        licenseKeypair.Quantity = model.Quantity;
+        licenseKeypair.CustomerName = model.CustomerName;
+        licenseKeypair.CustomerEmail = model.CustomerEmail;
+        licenseKeypair.AdditionalFeatures = model.AdditionalFeatures;
+
+        var dict = new Dictionary<string, string>()
+        {
+            { "PublicKey", publicKey },
+            { "ActivationDate", model.ActivationDate.ToString("yyyy-MM-dd") },
+            { "ActivationDays", model.ActivationDays.ToString() }
+        };
+
+        if (model.AdditionalFeatures != null)
+        {
+            foreach (var item in model.AdditionalFeatures)
+            {
+                dict.TryAdd(item.Key, item.Value);
+            }
+        }
 
         var license = License.New()
             .WithUniqueIdentifier(model.UniqueIdentifier)
             .As(model.LicenseType)
             .ExpiresAt(model.ExpirationDate)
             .WithMaximumUtilization(model.Quantity)
-            .WithAdditionalAttributes(new Dictionary<string, string>()
-            {
-                { "PublicKey", publicKey },
-                { "ActivationDate", model.ActivationDate.ToString("yyyy-MM-dd") },
-                { "ActivationDays", model.ActivationDays.ToString() }
-            })
+            .WithAdditionalAttributes(dict)
             .LicensedTo(model.CustomerName, model.CustomerEmail)
             .CreateAndSignWithPrivateKey(licenseKeypair.PrivateKey, password);
 

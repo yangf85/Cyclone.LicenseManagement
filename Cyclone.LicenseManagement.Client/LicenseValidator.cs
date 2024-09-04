@@ -13,11 +13,21 @@ public class LicenseValidator
         return license;
     }
 
-    public static ValidationResult Validate(License license)
+    public static ValidationResult Validate(License license, Func<LicenseAttributes, ValidationResult> additionalValidator = null)
     {
         var result = new ValidationResult();
         try
         {
+            //先执行自定义的验证
+            if (additionalValidator != null)
+            {
+                result = additionalValidator.Invoke(license.AdditionalAttributes);
+                if (result != null && !result.IsValid)
+                {
+                    return result;
+                }
+            }
+
             // 提取公共密钥
             var publicKey = license.AdditionalAttributes.Get("PublicKey");
 

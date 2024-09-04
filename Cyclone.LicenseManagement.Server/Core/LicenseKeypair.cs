@@ -5,66 +5,45 @@ using System.Xml.Serialization;
 
 namespace Cyclone.LicenseManagement.Server.Core;
 
-[Serializable]
-public class LicenseKeypair : IXmlSerializable
+[XmlRoot(nameof(LicenseKeypair))]
+public class LicenseKeypair
 {
-    public string Passphrase { get; set; }
-
-    public string Salt { get; set; }
-
+    [XmlElement(nameof(PublicKey), Order = 0)]
     public string PublicKey { get; set; }
 
+    [XmlElement(nameof(PrivateKey), Order = 1)]
     public string PrivateKey { get; set; }
 
-    public Guid UniqueIdentifier { get; set; }
+    [XmlElement(nameof(Passphrase), Order = 2)]
+    public string Passphrase { get; set; }
 
-    public LicenseType LicenseType { get; set; }
+    [XmlElement(nameof(Salt), Order = 3)]
+    public string Salt { get; set; }
 
-    public int MaximumUtilization { get; set; }
-
-    public DateTime ActivationDate { get; set; }
-
-    public int ActivationDays { get; set; }
-
-    public DateTime ExpirationDate { get; set; }
-
+    [XmlElement(nameof(CustomerName), Order = 4)]
     public string CustomerName { get; set; }
 
+    [XmlElement(nameof(CustomerEmail), Order = 5)]
     public string CustomerEmail { get; set; }
 
-    public XmlSchema GetSchema() => null;
+    [XmlElement(nameof(UniqueIdentifier), Order = 6)]
+    public Guid UniqueIdentifier { get; set; }
 
-    public void ReadXml(XmlReader reader)
-    {
-        reader.MoveToContent();
+    [XmlElement(nameof(LicenseType), Order = 7)]
+    public LicenseType LicenseType { get; set; }
 
-        Passphrase = reader.ReadElementContentAsString(nameof(Passphrase), "");
-        Salt = reader.ReadElementContentAsString(nameof(Salt), "");
-        PublicKey = reader.ReadElementContentAsString(nameof(PublicKey), "");
-        PrivateKey = reader.ReadElementContentAsString(nameof(PrivateKey), "");
-        UniqueIdentifier = new Guid(reader.ReadElementContentAsString(nameof(UniqueIdentifier), ""));
-        LicenseType = (LicenseType)Enum.Parse(typeof(LicenseType), reader.ReadElementContentAsString(nameof(LicenseType), ""));
-        MaximumUtilization = reader.ReadElementContentAsInt(nameof(MaximumUtilization), "");
-        ActivationDate = DateTime.ParseExact(reader.ReadElementContentAsString(nameof(ActivationDate), ""), "yyyy-MM-dd", null);
-        ActivationDays = reader.ReadElementContentAsInt(nameof(ActivationDays), "");
-        ExpirationDate = DateTime.ParseExact(reader.ReadElementContentAsString(nameof(ExpirationDate), ""), "yyyy-MM-dd", null);
-        CustomerName = reader.ReadElementContentAsString(nameof(CustomerName), "");
-        CustomerEmail = reader.ReadElementContentAsString(nameof(CustomerEmail), "");
-    }
+    [XmlElement(nameof(Quantity), Order = 8)]
+    public int Quantity { get; set; }
 
-    public void WriteXml(XmlWriter writer)
-    {
-        writer.WriteElementString(nameof(Passphrase), Passphrase);
-        writer.WriteElementString(nameof(Salt), Salt);
-        writer.WriteElementString(nameof(PublicKey), PublicKey);
-        writer.WriteElementString(nameof(PrivateKey), PrivateKey);
-        writer.WriteElementString(nameof(UniqueIdentifier), UniqueIdentifier.ToString());
-        writer.WriteElementString(nameof(LicenseType), LicenseType.ToString());
-        writer.WriteElementString(nameof(MaximumUtilization), MaximumUtilization.ToString());
-        writer.WriteElementString(nameof(ActivationDate), ActivationDate.ToString("yyyy-MM-dd"));
-        writer.WriteElementString(nameof(ActivationDays), ActivationDays.ToString());
-        writer.WriteElementString(nameof(ExpirationDate), ExpirationDate.ToString("yyyy-MM-dd"));
-        writer.WriteElementString(nameof(CustomerName), CustomerName);
-        writer.WriteElementString(nameof(CustomerEmail), CustomerEmail);
-    }
+    [XmlElement(nameof(ActivationDate), Order = 9)]
+    public DateTime ActivationDate { get; set; }
+
+    [XmlElement(nameof(ActivationDays), Order = 10)]
+    public int ActivationDays { get; set; }
+
+    [XmlElement(nameof(ExpirationDate), Order = 11)]
+    public DateTime ExpirationDate { get; set; }
+
+    [XmlArray(nameof(AdditionalFeatures), Order = 12), XmlArrayItem("Feature")]
+    public List<AdditionalFeature> AdditionalFeatures { get; set; } = [];
 }

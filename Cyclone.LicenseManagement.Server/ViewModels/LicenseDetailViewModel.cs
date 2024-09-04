@@ -22,8 +22,6 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
 {
     public partial class LicenseDetailViewModel : ObservableValidator
     {
-        public ObservableCollection<AdditionalFeatureViewModel> AdditionalFeatures { get; private set; }
-
         [ObservableProperty]
         private bool _isGeneration;
 
@@ -62,6 +60,8 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
 
         [ObservableProperty]
         private bool? _isLicenseValid;
+
+        public ObservableCollection<AdditionalFeatureViewModel> AdditionalFeatures { get; private set; }
 
         [Required]
         public string Passphrase
@@ -119,7 +119,7 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
                     LicenseType = SelectedLicenseIndex switch
                     {
                         0 => LicenseType.Standard,
-                        1 => LicenseType.Trial,
+                        _ => LicenseType.Trial,
                     };
                 };
             }
@@ -133,7 +133,7 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
         private void Init()
         {
             IsGeneration = true;
-            SelectedLicenseIndex = 0;
+            SelectedLicenseIndex = 1;
             UniqueIdentifier = Guid.NewGuid();
             LicenseType = LicenseType.Trial;
             CustomerName = string.Empty;
@@ -146,13 +146,16 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
             ExpirationDate = DateTime.Now.AddDays(ActivationDays);
 
             AdditionalFeatures = new();
-            AdditionalFeatures.Add(new AdditionalFeatureViewModel() { Label = LangKeys.Hardware, Value = string.Empty });
+            AdditionalFeatures.Add(new AdditionalFeatureViewModel() { Key = "Hardware", Value = string.Empty });
         }
 
         [RelayCommand]
         private void RemoveAdditionalFeature(AdditionalFeatureViewModel additionalFeature)
         {
-            AdditionalFeatures.Remove(additionalFeature);
+            if (additionalFeature != null)
+            {
+                AdditionalFeatures.Remove(additionalFeature);
+            }
         }
 
         [RelayCommand]

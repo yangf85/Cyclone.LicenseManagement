@@ -24,6 +24,8 @@ public class LicenseDetail
 
     public string Salt { get; set; }
 
+    public List<AdditionalFeature> AdditionalFeatures { get; set; }
+
     public LicenseDetail()
     {
         UniqueIdentifier = Guid.NewGuid();
@@ -36,5 +38,6 @@ public class LicenseDetail
         ActivationDate = DateTime.Now;
         ExpirationDate = ActivationDate.AddDays(ActivationDays);
         Salt = "LicenseSalt";
+        AdditionalFeatures = new List<AdditionalFeature>();
     }
 }
