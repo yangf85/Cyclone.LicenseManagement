@@ -31,7 +31,7 @@
   <ItemGroup>
     <Resource Include="Assets\Logo.ico" />
     <Resource Include="Assets\Logo.png" />
-    <Content Include="Logo.ico" />
+    <Resource Include="Logo.ico" />
   </ItemGroup>
 
   <ItemGroup>
