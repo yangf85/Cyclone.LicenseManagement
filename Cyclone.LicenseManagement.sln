@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cyclone.LicenseManagement.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cyclone.LicenseManagement.Client", "Cyclone.LicenseManagement.Client\Cyclone.LicenseManagement.Client.csproj", "{CFC01BF9-9A05-4F23-A293-DE57813208E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cyclone.LicenseManagement.Test", "Cyclone.LicenseManagement.Test\Cyclone.LicenseManagement.Test.csproj", "{60A71202-F174-4CB1-808B-293C134AAA8B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{CFC01BF9-9A05-4F23-A293-DE57813208E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFC01BF9-9A05-4F23-A293-DE57813208E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFC01BF9-9A05-4F23-A293-DE57813208E3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{60A71202-F174-4CB1-808B-293C134AAA8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{60A71202-F174-4CB1-808B-293C134AAA8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{60A71202-F174-4CB1-808B-293C134AAA8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60A71202-F174-4CB1-808B-293C134AAA8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
