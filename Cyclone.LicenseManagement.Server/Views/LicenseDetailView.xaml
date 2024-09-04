@@ -29,7 +29,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition MinWidth="360" />
+                    <ColumnDefinition MinWidth="320" />
                 </Grid.ColumnDefinitions>
                 <Border
                     Grid.Column="0"

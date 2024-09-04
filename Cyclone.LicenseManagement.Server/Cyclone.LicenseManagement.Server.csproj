@@ -15,7 +15,7 @@
     <Title>LicenseManagement</Title>
     <Description>许可证管理</Description>
     <ApplicationIcon>Logo.ico</ApplicationIcon>
-    <PackageIcon>Logo.png</PackageIcon>
+    <PackageIcon></PackageIcon>
     <Copyright>CopyRight@2024</Copyright>
     <Company>Cyclone</Company>
     <Authors>YangF</Authors>
@@ -24,24 +24,20 @@
 
   <ItemGroup>
     <None Remove="Assets\iconfont.ttf" />
-    <None Remove="Assets\logo.ico" />
     <None Remove="Assets\Logo.png" />
+    <None Remove="Logo.ico" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Logo.ico" />
+    <Resource Include="Assets\Logo.png" />
     <Content Include="Logo.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\Cyclone.LicenseManagement.Client\Logo.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Antelcat.I18N.WPF" Version="1.0.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />
     <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="Standard.Licensing" Version="1.2.0" />
@@ -53,8 +49,6 @@
 
   <ItemGroup>
     <Resource Include="Assets\iconfont.ttf" />
-    <Resource Include="Assets\Logo.ico" />
-    <Resource Include="Assets\Logo.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -97,6 +97,15 @@ namespace Cyclone.LicenseManagement.Server.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Close application 的本地化字符串。
+        /// </summary>
+        internal static string Close_application {
+            get {
+                return ResourceManager.GetString("Close application", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Customer Name: 的本地化字符串。
         /// </summary>
         internal static string Customer_Name_ {
@@ -147,6 +156,15 @@ namespace Cyclone.LicenseManagement.Server.Properties {
         internal static string Hardware {
             get {
                 return ResourceManager.GetString("Hardware", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Hide application 的本地化字符串。
+        /// </summary>
+        internal static string Hide_application {
+            get {
+                return ResourceManager.GetString("Hide application", resourceCulture);
             }
         }
         
@@ -259,6 +277,15 @@ namespace Cyclone.LicenseManagement.Server.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Show application 的本地化字符串。
+        /// </summary>
+        internal static string Show_application {
+            get {
+                return ResourceManager.GetString("Show application", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Signature: 的本地化字符串。
         /// </summary>
         internal static string Signature_ {
@@ -273,6 +300,15 @@ namespace Cyclone.LicenseManagement.Server.Properties {
         internal static string Standard {
             get {
                 return ResourceManager.GetString("Standard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Cyclone License Management 的本地化字符串。
+        /// </summary>
+        internal static string TaskbarIcon_ToolTip {
+            get {
+                return ResourceManager.GetString("TaskbarIcon ToolTip", resourceCulture);
             }
         }
         

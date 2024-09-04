@@ -198,4 +198,16 @@
   <data name="Value" xml:space="preserve">
     <value>Value</value>
   </data>
+  <data name="Close application" xml:space="preserve">
+    <value>Close application</value>
+  </data>
+  <data name="Hide application" xml:space="preserve">
+    <value>Hide application</value>
+  </data>
+  <data name="Show application" xml:space="preserve">
+    <value>Show application</value>
+  </data>
+  <data name="TaskbarIcon ToolTip" xml:space="preserve">
+    <value>Cyclone License Management</value>
+  </data>
 </root>

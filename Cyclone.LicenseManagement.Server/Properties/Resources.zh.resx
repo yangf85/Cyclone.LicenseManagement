@@ -198,4 +198,16 @@
   <data name="Remove" xml:space="preserve">
     <value>移除</value>
   </data>
+  <data name="Close application" xml:space="preserve">
+    <value>关闭应用</value>
+  </data>
+  <data name="Hide application" xml:space="preserve">
+    <value>隐藏应用</value>
+  </data>
+  <data name="Show application" xml:space="preserve">
+    <value>显示应用</value>
+  </data>
+  <data name="TaskbarIcon ToolTip" xml:space="preserve">
+    <value>Cyclone 授权管理</value>
+  </data>
 </root>

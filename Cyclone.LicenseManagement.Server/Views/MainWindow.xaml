@@ -9,6 +9,7 @@
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:p="clr-namespace:Cyclone.LicenseManagement.Server.Properties"
+    xmlns:tb="http://www.hardcodet.net/taskbar"
     xmlns:vm="clr-namespace:Cyclone.LicenseManagement.Server.ViewModels"
     xmlns:vw="clr-namespace:Cyclone.LicenseManagement.Server.Views"
     Title="{I18N {x:Static p:LangKeys.License_File_Management}}"
@@ -18,7 +19,7 @@
     Icon="/Assets/Logo.ico"
     SizeToContent="Height"
     WindowStartupLocation="CenterScreen"
-    WindowTitleBrush="#01579B"
+    WindowTitleBrush="#4FC3F7"
     mc:Ignorable="d">
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
@@ -38,5 +39,31 @@
             </ComboBox>
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
-    <vw:LicenseDetailView />
+    <Grid>
+        <vw:LicenseDetailView />
+        <tb:TaskbarIcon
+            IconSource="/Assets/Logo.ico"
+            ToolTipText="{I18N {x:Static p:LangKeys.TaskbarIcon_ToolTip}}"
+            Visibility="Visible">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Command="{x:Static vm:AppCommands.CloseCommand}" Header="{I18N {x:Static p:LangKeys.Close_application}}">
+                        <MenuItem.Icon>
+                            <mah:FontIcon FontSize="20" Glyph="&#xea7d;" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{x:Static vm:AppCommands.HideCommand}" Header="{I18N {x:Static p:LangKeys.Hide_application}}">
+                        <MenuItem.Icon>
+                            <mah:FontIcon FontSize="20" Glyph="&#xea7f;" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{x:Static vm:AppCommands.ShowCommand}" Header="{I18N {x:Static p:LangKeys.Show_application}}">
+                        <MenuItem.Icon>
+                            <mah:FontIcon FontSize="20" Glyph="&#xea7e;" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
+    </Grid>
 </mah:MetroWindow>
