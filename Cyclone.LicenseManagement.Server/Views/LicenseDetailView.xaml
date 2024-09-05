@@ -29,7 +29,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="5" />
-                    <ColumnDefinition MinWidth="320" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Border
                     Grid.Column="0"
@@ -53,18 +53,7 @@
                             Margin="0,5,0,0"
                             Label="{I18N {x:Static p:LangKeys.Password_}}"
                             SharedName="A">
-                            <PasswordBox Margin="5,0" mah:PasswordBoxBindingBehavior.Password="{Binding Passphrase}" />
-                            <ctl:FormItem.AttachedObject>
-                                <Button Width="100" Command="{Binding GenerateLicenseKeypairCommand}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <mah:FontIcon Glyph="&#xe9db;" />
-                                        <TextBlock
-                                            Margin="5,0,0,0"
-                                            VerticalAlignment="Center"
-                                            Text="{I18N {x:Static p:LangKeys.Generate_Key}}" />
-                                    </StackPanel>
-                                </Button>
-                            </ctl:FormItem.AttachedObject>
+                            <PasswordBox Margin="5,0,0,0" mah:PasswordBoxBindingBehavior.Password="{Binding Passphrase}" />
                         </ctl:FormItem>
                         <ctl:FormItem
                             Margin="0,5,0,0"
@@ -258,7 +247,16 @@
             Grid.Row="1"
             Margin="0,5,0,0"
             Rows="1">
-            <Button Command="{Binding SaveLicenseFileCommand}">
+            <Button Command="{Binding GenerateLicenseKeypairCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <mah:FontIcon Glyph="&#xe9db;" />
+                    <TextBlock
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="{I18N {x:Static p:LangKeys.Generate_Key}}" />
+                </StackPanel>
+            </Button>
+            <Button Margin="5,0,0,0" Command="{Binding SaveLicenseFileCommand}">
                 <StackPanel Orientation="Horizontal">
                     <mah:FontIcon Glyph="&#xe9c2;" />
                     <TextBlock

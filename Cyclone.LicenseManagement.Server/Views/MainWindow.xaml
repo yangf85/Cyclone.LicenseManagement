@@ -14,6 +14,8 @@
     xmlns:vw="clr-namespace:Cyclone.LicenseManagement.Server.Views"
     Title="{I18N {x:Static p:LangKeys.License_File_Management}}"
     Width="960"
+    MinWidth="960"
+    MinHeight="450"
     d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
     d:DesignHeight="450"
     Icon="/Assets/Logo.ico"
@@ -52,9 +54,7 @@
                         Command="{x:Static vm:AppCommands.CloseCommand}"
                         Header="{I18N {x:Static p:LangKeys.Close_application}}">
                         <MenuItem.Icon>
-                            <mah:FontIcon
-                                FontSize="20"
-                                Glyph="&#xea7d;" />
+                            <mah:FontIcon FontSize="20" Glyph="&#xea7d;" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem
@@ -62,9 +62,7 @@
                         Command="{x:Static vm:AppCommands.HideCommand}"
                         Header="{I18N {x:Static p:LangKeys.Hide_application}}">
                         <MenuItem.Icon>
-                            <mah:FontIcon
-                                FontSize="20"
-                                Glyph="&#xea7f;" />
+                            <mah:FontIcon FontSize="20" Glyph="&#xea7f;" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem
@@ -72,9 +70,7 @@
                         Command="{x:Static vm:AppCommands.ShowCommand}"
                         Header="{I18N {x:Static p:LangKeys.Show_application}}">
                         <MenuItem.Icon>
-                            <mah:FontIcon
-                                FontSize="20"
-                                Glyph="&#xea7e;" />
+                            <mah:FontIcon FontSize="20" Glyph="&#xea7e;" />
                         </MenuItem.Icon>
                     </MenuItem>
                 </ContextMenu>
