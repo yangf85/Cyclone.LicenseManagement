@@ -247,11 +247,12 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
         }
 
         [RelayCommand(CanExecute = nameof(CanValidateLicense))]
-        private void ValidateLicense()
+        private async Task ValidateLicense()
         {
             try
             {
-                IsLicenseValid = LicenseValidator.Validate(_license).IsValid;
+                var result = await LicenseValidator.Validate(_license);
+                IsLicenseValid = result.IsValid;
             }
             catch (Exception ex)
             {

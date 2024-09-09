@@ -13,7 +13,7 @@ public class LicenseValidator
         return license;
     }
 
-    public static ValidationResult Validate(License license, Func<LicenseAttributes, ValidationResult> additionalValidator = null)
+    public static async Task<ValidationResult> Validate(License license, Func<LicenseAttributes, ValidationResult> additionalValidator = null)
     {
         var result = new ValidationResult();
         try
@@ -31,9 +31,11 @@ public class LicenseValidator
             // 提取公共密钥
             var publicKey = license.AdditionalAttributes.Get("PublicKey");
 
+            var date = await NetworkTimer.GetTimeAsync() ?? DateTime.Now;
+
             // 验证许可证签名
             var errors = license.Validate()
-                                .ExpirationDate()
+                                .ExpirationDate(date)
                                 .When(i => i.Type == LicenseType.Standard)
                                 .And()
                                 .Signature(publicKey)
