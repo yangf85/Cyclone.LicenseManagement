@@ -6,14 +6,14 @@ namespace Cyclone.LicenseManagement.Client;
 
 public class LicenseValidator
 {
-    public static async Task<License> LoadAsync(string path)
+    public static License Load(string path)
     {
-        var licenseContent = await File.ReadAllTextAsync(path);
+        var licenseContent = File.ReadAllText(path);
         var license = License.Load(licenseContent);
         return license;
     }
 
-    public static async Task<ValidationResult> ValidateAsync(License license, params ILicenseAttributeValidator[] licenseAttributeValidator)
+    public static ValidationResult Validate(License license, params ILicenseAttributeValidator[] licenseAttributeValidator)
     {
         var result = new ValidationResult();
         try
@@ -32,7 +32,7 @@ public class LicenseValidator
             // 提取公共密钥
             var publicKey = license.AdditionalAttributes.Get("PublicKey");
 
-            var date = await NetworkTimer.GetTimeAsync() ?? DateTime.Now;
+            var date = NetworkTimer.GetTime() ?? DateTime.Now;
 
             // 验证许可证签名和过期时间
             var errors = license.Validate()

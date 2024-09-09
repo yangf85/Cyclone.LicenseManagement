@@ -219,8 +219,8 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
                 openFileDialog.Filter = "License Files (*.lic)|*.lic";
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    _license = await LicenseValidator.LoadAsync(openFileDialog.FileName);
-                    var result = await LicenseValidator.ValidateAsync(_license);
+                    _license = LicenseValidator.Load(openFileDialog.FileName);
+                    var result = LicenseValidator.Validate(_license);
                     if (result.IsValid)
                     {
                         CustomerName = _license.Customer.Name;
@@ -254,11 +254,11 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
         }
 
         [RelayCommand(CanExecute = nameof(CanValidateLicense))]
-        private async Task ValidateLicense()
+        private void ValidateLicense()
         {
             try
             {
-                var result = await LicenseValidator.ValidateAsync(_license);
+                var result = LicenseValidator.Validate(_license);
                 IsLicenseValid = result.IsValid;
                 if (IsLicenseValid == false)
                 {
