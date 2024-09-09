@@ -61,6 +61,9 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
         [ObservableProperty]
         private bool? _isLicenseValid;
 
+        [ObservableProperty]
+        private string _validationMessage;
+
         public ObservableCollection<AdditionalFeatureViewModel> AdditionalFeatures { get; private set; }
 
         [Required]
@@ -208,7 +211,7 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
         }
 
         [RelayCommand]
-        private void LoadLicenseFile()
+        private async Task LoadLicenseFile()
         {
             try
             {
@@ -216,16 +219,20 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
                 openFileDialog.Filter = "License Files (*.lic)|*.lic";
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    _license = LicenseValidator.Read(openFileDialog.FileName);
-                    CustomerName = _license.Customer.Name;
-                    CustomerEmail = _license.Customer.Email;
-                    UniqueIdentifier = _license.Id;
-                    LicenseType = _license.Type;
-                    ExpirationDate = _license.Expiration;
-                    Quantity = _license.Quantity;
-                    PublicKey = _license.AdditionalAttributes.Get("PublicKey");
-                    ActivationDays = int.Parse(_license.AdditionalAttributes.Get("ActivationDays"));
-                    Signature = _license.Signature;
+                    _license = await LicenseValidator.LoadAsync(openFileDialog.FileName);
+                    var result = await LicenseValidator.ValidateAsync(_license);
+                    if (result.IsValid)
+                    {
+                        CustomerName = _license.Customer.Name;
+                        CustomerEmail = _license.Customer.Email;
+                        UniqueIdentifier = _license.Id;
+                        LicenseType = _license.Type;
+                        ExpirationDate = _license.Expiration;
+                        Quantity = _license.Quantity;
+                        PublicKey = _license.AdditionalAttributes.Get("PublicKey");
+                        ActivationDays = int.Parse(_license.AdditionalAttributes.Get("ActivationDays"));
+                        Signature = _license.Signature;
+                    }
                 }
                 IsGeneration = false;
                 ValidateLicenseCommand.NotifyCanExecuteChanged();
@@ -251,8 +258,16 @@ namespace Cyclone.LicenseManagement.Server.ViewModels
         {
             try
             {
-                var result = await LicenseValidator.Validate(_license);
+                var result = await LicenseValidator.ValidateAsync(_license);
                 IsLicenseValid = result.IsValid;
+                if (IsLicenseValid == false)
+                {
+                    ValidationMessage = result.ErrorMessage;
+                }
+                else if (IsLicenseValid == true)
+                {
+                    ValidationMessage = "License is valid.";
+                }
             }
             catch (Exception ex)
             {

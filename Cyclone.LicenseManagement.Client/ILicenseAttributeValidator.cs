@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Cyclone.LicenseManagement.Client;
 
-public class ValidationResult
+public interface ILicenseAttributeValidator
 {
-    public bool IsValid { get; set; }
+    string AttributeName { get; }
 
-    public string ErrorMessage { get; set; }
+    ValidationResult Validate(string atttributeValue);
 }

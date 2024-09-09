@@ -6,24 +6,25 @@ namespace Cyclone.LicenseManagement.Client;
 
 public class LicenseValidator
 {
-    public static License Read(string path)
+    public static async Task<License> LoadAsync(string path)
     {
-        var licenseContent = File.ReadAllText(path);
+        var licenseContent = await File.ReadAllTextAsync(path);
         var license = License.Load(licenseContent);
         return license;
     }
 
-    public static async Task<ValidationResult> Validate(License license, Func<LicenseAttributes, ValidationResult> additionalValidator = null)
+    public static async Task<ValidationResult> ValidateAsync(License license, params ILicenseAttributeValidator[] licenseAttributeValidator)
     {
         var result = new ValidationResult();
         try
         {
-            //先执行自定义的验证
-            if (additionalValidator != null)
+            // 先执行自定义的验证
+            if (licenseAttributeValidator != null)
             {
-                result = additionalValidator.Invoke(license.AdditionalAttributes);
-                if (result != null && !result.IsValid)
+                foreach (var additionalValidator in licenseAttributeValidator)
                 {
+                    var value = license.AdditionalAttributes.Get(additionalValidator.AttributeName);
+                    result = additionalValidator.Validate(value);
                     return result;
                 }
             }
@@ -33,10 +34,9 @@ public class LicenseValidator
 
             var date = await NetworkTimer.GetTimeAsync() ?? DateTime.Now;
 
-            // 验证许可证签名
+            // 验证许可证签名和过期时间
             var errors = license.Validate()
                                 .ExpirationDate(date)
-                                .When(i => i.Type == LicenseType.Standard)
                                 .And()
                                 .Signature(publicKey)
                                 .AssertValidLicense();
@@ -50,15 +50,13 @@ public class LicenseValidator
                 }
                 return result;
             }
-
             result.IsValid = true;
-
-            return result;
         }
         catch (Exception ex)
         {
-            result.ErrorMessage = ex.Message;
-            return result;
+            result.ErrorMessage = $"An unexpected error occurred: {ex.Message}";
         }
+
+        return result;
     }
 }

@@ -4,8 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>0.24.9.9</AssemblyVersion>
-    <FileVersion>0.24.9.9</FileVersion>
+    <AssemblyVersion>0.24.9.10</AssemblyVersion>
+    <FileVersion>0.24.9.10</FileVersion>
     <ApplicationIcon>Logo.ico</ApplicationIcon>
     <Title>Cyclone.LicenseManagement.Client</Title>
     <Description>授权管理验证工具</Description>
