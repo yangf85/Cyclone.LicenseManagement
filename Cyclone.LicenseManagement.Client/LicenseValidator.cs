@@ -13,19 +13,22 @@ public class LicenseValidator
         return license;
     }
 
-    public static ValidationResult Validate(License license, params ILicenseAttributeValidator[] licenseAttributeValidator)
+    public static ValidationResult Validate(License license, params ILicenseAttributeValidator[] licenseAttributeValidators)
     {
         var result = new ValidationResult();
         try
         {
             // 先执行自定义的验证
-            if (licenseAttributeValidator != null)
+            if (licenseAttributeValidators != null)
             {
-                foreach (var additionalValidator in licenseAttributeValidator)
+                foreach (var additionalValidator in licenseAttributeValidators)
                 {
                     var value = license.AdditionalAttributes.Get(additionalValidator.AttributeName);
                     result = additionalValidator.Validate(value);
-                    return result;
+                    if (!result.IsValid)
+                    {
+                        return result;
+                    }
                 }
             }
 
@@ -44,17 +47,16 @@ public class LicenseValidator
             // 检查验证结果
             if (errors.Any())
             {
-                foreach (var error in errors)
-                {
-                    result.ErrorMessage += $"{error.Message} \n";
-                }
+                result.IsValid = false;
+                result.ErrorMessage = $"{errors.First().Message}";
                 return result;
             }
             result.IsValid = true;
         }
         catch (Exception ex)
         {
-            result.ErrorMessage = $"An unexpected error occurred: {ex.Message}";
+            result.ErrorMessage = $"An unexpected error occurred: {ex.Message}{Environment.NewLine}{ex.StackTrace}";
+            result.IsValid = false;
         }
 
         return result;
